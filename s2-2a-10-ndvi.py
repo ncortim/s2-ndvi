@@ -1,12 +1,23 @@
 import glob
 import numpy as np
 from osgeo import gdal
+from typing import Tuple
 
 
-def find_band(directory, pattern):
-    """
-    Find the file path for a specific band (e.g., B04, B08)
-    within the R10m folder.
+def find_band(directory: str, pattern: str) -> str:
+    """Find the file path for a specific band
+    (e.g., B04, B08) within the R10m folder.
+
+
+    Args:
+        directory (str): path to Sentine SAFE directory
+        pattern (str): filename pattern used for searchin
+
+    Raises:
+        FileNotFoundError: Error if file was not found
+
+    Returns:
+        str: path to Sentinel 2 file according to defined pattern
     """
     file_path = glob.glob(f"{directory}/**/*{pattern}", recursive=True)
     if file_path:
@@ -15,7 +26,9 @@ def find_band(directory, pattern):
         raise FileNotFoundError(f"Band {pattern} not found in {directory}")
 
 
-def read_band(band_path):
+def read_band(
+    band_path: str,
+) -> Tuple[np.ndarray, Tuple[float, float, float, float, float, float], str]:
     """
     Read a raster band from the given path and return as a numpy array.
 
@@ -33,7 +46,7 @@ def read_band(band_path):
     return band_array, transform, projection
 
 
-def compute_ndvi(red_band, nir_band):
+def compute_ndvi(red_band: np.ndarray, nir_band: np.ndarray) -> np.ndarray:
     """
     Compute the NDVI from Red and NIR bands.
 
@@ -49,7 +62,12 @@ def compute_ndvi(red_band, nir_band):
     return ndvi
 
 
-def write_cog(ndvi, transform, projection, output_cog_path):
+def write_cog(
+    ndvi: np.ndarray,
+    transform: Tuple[float, float, float, float, float, float],
+    projection: str,
+    output_cog_path: str,
+):
     """
     Write the NDVI array to a Cloud Optimized GeoTIFF (COG).
 
@@ -86,7 +104,7 @@ def write_cog(ndvi, transform, projection, output_cog_path):
     print(f"NDVI calculation complete. COG saved to {output_cog_path}")
 
 
-def main(safe_folder, output_cog_path):
+def main(safe_folder: str, output_cog_path: str):
     """
     Main function to read bands, compute NDVI, and write the output COG.
 
