@@ -1,4 +1,5 @@
 import glob
+import click
 import numpy as np
 from osgeo import gdal
 from typing import Tuple
@@ -104,18 +105,27 @@ def write_cog(
     print(f"NDVI calculation complete. COG saved to {output_cog_path}")
 
 
-def main(safe_folder: str, output_cog_path: str):
+@click.command()
+@click.argument("path_to_s2_folder", type=click.Path(exists=True))
+@click.argument("output_cog_path", type=click.Path(exists=True))
+# def main(**kwargs):
+def main(path_to_s2_folder: str, output_cog_path: str):
     """
     Main function to read bands, compute NDVI, and write the output COG.
 
     Args:
-        red_band_path (str): Path to the red band file.
-        nir_band_path (str): Path to the NIR band file.
-        output_cog_path (str): Path where the COG will be saved.
+        path_to_s2_folder (str): Path to the Sentinel2 SAFE folder. Do not
+            use a trailing slash (e.g. /path/to/dir)
+        output_cog_path (str): Path where the COG will be saved. Do not
+            use a trailing slash (e.g. /path/to/dir)
     """
 
-    red_band_path = find_band(safe_folder, "B04_10m.jp2")
-    nir_band_path = find_band(safe_folder, "B08_10m.jp2")
+    # path_to_s2_folder = (kwargs["path_to_s2_folder"],)
+    # output_cog_path = (kwargs["output_cog_path"],)
+    output_cog_path = f"{output_cog_path}/s2-2a-10m-ndvi.tif"
+
+    red_band_path = find_band(path_to_s2_folder, "B04_10m.jp2")
+    nir_band_path = find_band(path_to_s2_folder, "B08_10m.jp2")
 
     red_band_path = red_band_path[0]
     nir_band_path = nir_band_path[0]
@@ -128,9 +138,5 @@ def main(safe_folder: str, output_cog_path: str):
     write_cog(ndvi, transform, projection, output_cog_path)
 
 
-# Example usage
 if __name__ == "__main__":
-    safe_folder = "/path/to/sentinel/SAFE/directory"
-    output_cog_path = "path/to/output/ndvi_cog.tif"
-
-    main(safe_folder, output_cog_path)
+    main()
