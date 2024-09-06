@@ -14,7 +14,13 @@ source ${WPS_PROPS}
 echo "### create output directory ###"
 mkdir -p /home/worker/workDir/outDir/ndvi_output
 
+#get sentinel 2 scene basename
+BASENAME=$(ls ${S2_INPUT}/GRANULE)
+DATE=${BASENAME:19:16}
+TILE=${BASENAME:5:5}
+NEW_BASENAME=NDVI_S2_L2A_"${TILE}"_"${DATE}"
+
 #execute s2 ndvi calculator.py
 echo "### Launching s2-2a-10m-ndvi.py ###"
-time python3 /home/worker/processor/s2-2a-10m-ndvi.py ${s2_input} ${ndvi_output}
+time python3 /home/worker/processor/s2-2a-10m-ndvi.py ${S2_INPUT} ${NDVI_OUTPUT} ${NEW_BASENAME}
 

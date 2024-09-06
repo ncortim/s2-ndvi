@@ -108,8 +108,9 @@ def write_cog(
 @click.command()
 @click.argument("path_to_s2_folder", type=click.Path(exists=True))
 @click.argument("output_cog_path", type=click.Path(exists=True))
+@click.argument("new_basename", type=click.STRING)
 # def main(**kwargs):
-def main(path_to_s2_folder: str, output_cog_path: str):
+def main(path_to_s2_folder: str, output_cog_path: str, new_basename: str):
     """
     Main function to read bands, compute NDVI, and write the output COG.
 
@@ -118,11 +119,13 @@ def main(path_to_s2_folder: str, output_cog_path: str):
             use a trailing slash (e.g. /path/to/dir)
         output_cog_path (str): Path where the COG will be saved. Do not
             use a trailing slash (e.g. /path/to/dir)
+        new_basename (str): String containing the name of the new calculated
+            ndvi
     """
 
     # path_to_s2_folder = (kwargs["path_to_s2_folder"],)
     # output_cog_path = (kwargs["output_cog_path"],)
-    output_cog_path = f"{output_cog_path}/s2-2a-10m-ndvi.tif"
+    output_cog_path = f"{output_cog_path}/{new_basename}.tif"
 
     red_band_path = find_band(path_to_s2_folder, "B04_10m.jp2")
     nir_band_path = find_band(path_to_s2_folder, "B08_10m.jp2")
