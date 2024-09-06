@@ -1,7 +1,3 @@
-# s2-ndvi
-This repository contains Python code for calculating the Normalized Difference Vegetation Index (NDVI) from Sentinel-2 Level 2A imagery using GDAL. The script reads the Red and Near Infrared (NIR) bands from Sentinel-2 data, computes NDVI, and outputs the result as a Cloud Optimized GeoTIFF (COG).
-
-
 # Sentinel-2 NDVI Computation Tool
 
 This Python tool calculates the Normalized Difference Vegetation Index (NDVI) from Sentinel-2 satellite imagery and outputs the result as a Cloud Optimized GeoTIFF (COG). The tool is designed to work with Sentinel-2 Level-2A data stored in a directory with the extension .SAFE, specifically targeting the 10m resolution bands.
@@ -17,7 +13,7 @@ This Python tool calculates the Normalized Difference Vegetation Index (NDVI) fr
 
 ## Requirements
 
-- Python 3.7+
+- Python 3.10+
 - [GDAL](https://gdal.org/) (Geospatial Data Abstraction Library)
 - [Click](https://click.palletsprojects.com/) (Command-line interface creation toolkit)
 - [NumPy](https://numpy.org/)
@@ -26,37 +22,42 @@ This Python tool calculates the Normalized Difference Vegetation Index (NDVI) fr
 
 1. Clone this repository:
     ```bash
-    git clone https://github.com/yourusername/sentinel2-ndvi.git
-    cd sentinel2-ndvi
+    git clone https://github.com/yourusername/s2-ndvi.git
+    cd s2-ndvi
     ```
-
-2. Install the required Python packages:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-3. Ensure that GDAL is properly installed and configured on your system. You can refer to the [official GDAL installation guide](https://gdal.org/download.html) for assistance.
 
 ## Usage
+
+### Standalone script
 
 To run the NDVI computation tool, use the following command in your terminal:
 
 ```bash
-python s2-2a-10m-ndvi.py /path/to/Sentinel2_SAFE_directory /path/to/output_directory
+python s2-2a-10m-ndvi.py /path/to/Sentinel2_SAFE_directory /path/to/output_directory desired-file-name
 ```
 
-### Arguments:
+#### Arguments:
 - `/path/to/Sentinel2_SAFE_directory`: The path to the Sentinel-2 SAFE directory containing the Level-2A data.
 - `/path/to/output_directory`: The path where the output Cloud Optimized GeoTIFF will be saved.
+- `desired-file-name`: The name how you want the output file to be called
 
-### Example:
+#### Example:
 
 ```bash
-python s2-2a-10m-ndvi.py /data/sentinel2/SAFE /output/ndvi
+python s2-2a-10m-ndvi.py /data/sentinel2/SAFE /output/ndvi my-new-ndvi
 ```
 
-This command will create an NDVI COG file named `s2-2a-10m-ndvi.tif` in the `/output/ndvi` directory.
+This command will create an NDVI COG file named `my-new-ndvi.tif` in the `/output/ndvi` directory.
 
+### Docker
+1. update paths in file `wps-properties`. This file is used to set the needed environment variables whichc specify the IO paths
+2. update paths in docker-compose bind mounts (volumes)
+3. execute docker compose command:
+```bash
+docker compose up
+# or 
+docker compose up -d
+```
 ## Contributing
 
 Contributions are welcome! Please fork this repository and submit a pull request with your improvements or bug fixes.
