@@ -6,9 +6,9 @@ This Python tool calculates the Normalized Difference Vegetation Index (NDVI) fr
 
 - **Automatic Band Search:** The tool automatically searches for the red (B04) and near-infrared (B08) bands within a specified Sentinel-2 SAFE directory.
 - **NDVI Calculation:** Computes NDVI using the formula:
-  \[
-  \text{NDVI} = \frac{\text{NIR} - \text{Red}}{\text{NIR} + \text{Red}}
-  \]
+
+  NDWI = (NIR - Red) \ (NIR + Red)
+
 - **Cloud Optimized GeoTIFF (COG) Output:** Saves the NDVI result as a Cloud Optimized GeoTIFF with efficient tiling and compression for better performance in cloud environments.
 
 ## Requirements
@@ -22,7 +22,7 @@ This Python tool calculates the Normalized Difference Vegetation Index (NDVI) fr
 
 1. Clone this repository:
     ```bash
-    git clone https://github.com/yourusername/s2-ndvi.git
+    git clone https://github.com/ncortim/s2-ndvi.git
     cd s2-ndvi
     ```
 
